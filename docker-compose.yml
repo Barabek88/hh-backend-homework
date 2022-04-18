@@ -7,7 +7,7 @@ services:
     volumes:
       - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
-      - "5432:5432"
+      - "5431:5432"
     environment:
       POSTGRES_PASSWORD: hh
       POSTGRES_DB: hh
@@ -18,11 +18,26 @@ services:
       timeout: 5s
       retries: 5
 
-  hh-homework-backend:
-    image: hh-homework-backend
-    depends_on:
-      postgres:
-        condition: service_healthy
-    restart: always
+  #hh-homework-backend:
+   # image: hh-homework-backend
+   # depends_on:
+   #   postgres:
+   #     condition: service_healthy
+   # restart: always
+   # ports:
+   #   - "8080:8080"
+
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4:5.7
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "77@x.com"
+      PGADMIN_DEFAULT_PASSWORD: "pgx"
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    volumes:
+      - ./pgadmin:/var/lib/pgadmin
     ports:
-      - "8080:8080"
+      - "5050:80"
+    restart: unless-stopped
+
+
